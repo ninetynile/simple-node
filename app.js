@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const apicache = require('apicache');
 const app = express();
+const cache = apicache.middleware;
 app.use(cors());
 const port = 3001;
 
@@ -9,7 +11,7 @@ app.get('/', (req, res) => {
     res.json({ message: 'Hello World' });
 });
 
-app.get('/hiragana', (req, res) => {
+app.get('/hiragana', cache('30 minutes'), (req, res) => {
     res.json([
 	// A-row
 	{ char: "あ", romaji: "a" },
