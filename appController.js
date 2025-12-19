@@ -13,7 +13,7 @@ exports.healthCheck = (req, res) => {
 
 exports.downloadResume = (req, res) => {
 	// Adjusted path: go up one level from 'controllers' to root, then into 'files'
-	const filePath = path.join(__dirname, "../files", "Pechdanai_Resume.pdf");
+	const filePath = path.join(__dirname, "@/files", "Pechdanai_Resume.pdf");
 
 	if (!fs.existsSync(filePath)) {
 		return res.status(404).json({ message: "Resume not found" });
