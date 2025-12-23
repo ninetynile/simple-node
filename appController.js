@@ -29,18 +29,28 @@ exports.downloadResume = (req, res) => {
 };
 
 exports.getStockQuote = async (req, res) => {
-	const symbol = req.query.symbol;
+	const { symbol } = req.body;
 
 	if (!symbol) {
-		return res.status(400).json({ message: "Stock symbol is required (e.g., ?symbol=AAPL)" });
+		return res
+			.status(400)
+			.json({ message: "Stock symbol is required (e.g., { symbol: 'AAPL' })" });
 	}
 
 	try {
 		const quote = await yahooFinance.quote(symbol);
-        const price = quote.regularMarketPrice;
-		res.json({ price });
+		// const price = quote.regularMarketPrice;
+		const allPrice = quote.map(item => ({
+			symbol: item.symbol,
+			price: item.regularMarketPrice
+		}));
+
+		res.json({ allPrice });
 	} catch (error) {
-		res.status(500).json({ message: "Error fetching stock data", error: error.message });
+		res.status(500).json({
+			message: "Error fetching stock data",
+			error: error.message,
+		});
 	}
 };
 
